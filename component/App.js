@@ -3,15 +3,15 @@ import { connect } from '../store.js'
 import Header from './Header.js'
 import TodoList from './TodoList.js'
 import Footer from './Footer.js'
-import handleEventListeners from './HandleEventListeners.js'
-
 const connector = connect()
 
-function App({todoList}) {
-  handleEventListeners()
-
+function App({ todoList }) {
   return html`
-    <section class="todoapp">${Header()} ${!!todoList.length && TodoList()} ${!!todoList.length && Footer()}</section>
+    <section class="todoapp">
+      ${Header()} 
+      ${!!todoList.length && TodoList()}
+      ${!!todoList.length && Footer()}
+    </section>
   `
 }
 

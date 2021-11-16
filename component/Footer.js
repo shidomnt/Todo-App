@@ -3,36 +3,35 @@ import { connect } from '../store.js'
 
 const connector = connect()
 
-function Footer({ todoList, filter }) {
-  const completedLength = todoList.filter((todo) => todo.status).length
+function Footer({ todoList, filter, filters }) {
   return html`
     <footer class="footer">
       <span class="todo-count"
-        ><strong>${todoList.filter(item => !item.status).length}</strong> item
+        ><strong>${todoList.filter(filters.active).length}</strong> item
         left</span
       >
       <ul class="filters">
-        <li>
-          <a href="#/" class="${filter === 'all' ? 'selected' : ''} filter all"
-            >All</a
-          >
-        </li>
-        <li>
-          <a
-            href="#/active"
-            class="${filter === 'active' ? 'selected' : ''} filter active"
-            >Active</a
-          >
-        </li>
-        <li>
-          <a
-            href="#/completed"
-            class="${filter === 'completed' ? 'selected' : ''} filter completed"
-            >Completed</a
-          >
-        </li>
+        ${Object.keys(filters).map(
+          type => html`
+            <li>
+              <a
+                onclick="dispatch('filter', '${type}')"
+                href="#"
+                class="${filter === type && 'selected'} filter ${type}"
+              >
+                ${type[0].toUpperCase() + type.slice(1)}
+              </a>
+            </li>
+          `
+        )}
       </ul>
-      <button class="clear-completed" style="display: ${completedLength ? 'block' : 'none'}">Clear completed</button>
+      <button
+        onclick="dispatch('clearCompleted')"
+        class="clear-completed"
+        style="display: ${todoList.filter(filters.completed).length ? 'block' : 'none'}"
+      >
+        Clear completed
+      </button>
     </footer>
   `
 }
